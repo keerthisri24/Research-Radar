@@ -1,3 +1,8 @@
+
+# Sources:
+# arxiv api documentation: https://info.arxiv.org/help/api/user-manual.html
+# xml ET docuumentation: https://docs.python.org/3/library/xml.etree.elementtree.html
+
 import requests
 import xml.etree.ElementTree as ET
 from urllib.parse import quote_plus
@@ -44,9 +49,9 @@ def search_arxiv(query, max_results):
         ]
 
         primary_category = None
-        primary_cat_elem = entry.find("arxiv:primary_category", namespace)
-        if primary_cat_elem is not None:
-            primary_category = primary_cat_elem.attrib.get("term")
+        primary_cat_val = entry.find("arxiv:primary_category", namespace)
+        if primary_cat_val is not None:
+            primary_category = primary_cat_val.attrib.get("term")
 
         papers.append(
             {
@@ -65,8 +70,8 @@ def search_arxiv(query, max_results):
 
 
 if __name__ == "__main__":
-    query = 'cat:cs.AI OR cat:cs.CL OR cat:cs.LG AND (all:agent OR all:"retrieval augmented generation" OR all:RAG)'
-
+    query = query = '(cat:cs.AI OR cat:cs.CL OR cat:cs.LG) AND ' \
+    '(all:agent OR all:"retrieval augmented generation" OR all:RAG OR all:multimodal OR all:"multi modal" OR all:"ai ethics" OR all:ethics)'
     papers = search_arxiv(query, max_results = 5)
 
     for i, paper in enumerate(papers, start=1):
