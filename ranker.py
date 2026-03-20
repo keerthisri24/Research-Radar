@@ -1,9 +1,12 @@
 import os
 import json
 from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),
+    api_key=os.getenv("OPENAI_API_KEY")
 )
 
 SYSTEM_PROMPT = """
@@ -26,7 +29,7 @@ Each item must have:
 - relevance_score
 - reason_selected
 
-Use only the provided title and abstract.
+Use onlyy the provided title and abstract.
 Be concrete.
 """
 
