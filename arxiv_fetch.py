@@ -55,7 +55,7 @@ def search_arxiv(query, max_results):
 
         papers.append(
             {
-                "id": paper_id,
+                "arxiv_id": paper_id,
                 "title": title,
                 "summary": summary,
                 "published": published,
@@ -70,7 +70,7 @@ def search_arxiv(query, max_results):
 
 
 if __name__ == "__main__":
-    query = query = '(cat:cs.AI OR cat:cs.CL OR cat:cs.LG) AND ' \
+    query = '(cat:cs.AI OR cat:cs.CL OR cat:cs.LG) AND ' \
     '(all:agent OR all:"retrieval augmented generation" OR all:RAG OR all:multimodal OR all:"multi modal" OR all:"ai ethics" OR all:ethics)'
     papers = search_arxiv(query, max_results = 5)
 
@@ -80,6 +80,6 @@ if __name__ == "__main__":
         print("Authors:", ", ".join(paper["authors"][:5]))
         print("Published:", paper["published"])
         print("Category:", paper["primary_category"])
-        print("ID:", paper["id"])
+        print("ID:", paper["arxiv_id"])
         print("Summary:", paper["summary"][:500], "..." if len(paper["summary"]) > 500 else "")
 
