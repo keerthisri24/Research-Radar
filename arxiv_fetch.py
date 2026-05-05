@@ -4,6 +4,7 @@
 # xml ET docuumentation: https://docs.python.org/3/library/xml.etree.elementtree.html
 
 import requests
+import time
 import xml.etree.ElementTree as ET
 from urllib.parse import quote_plus
 
@@ -23,6 +24,7 @@ def search_arxiv(query, max_results):
         f"&sortOrder=descending"
     )
 
+    time.sleep(3)
     retrieved_papers = requests.get(url, timeout=30)
     retrieved_papers.raise_for_status()
 
