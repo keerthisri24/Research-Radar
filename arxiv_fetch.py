@@ -71,7 +71,8 @@ def search_arxiv(query, max_results):
         summary = entry.findtext("atom:summary", default="", namespaces=namespace).strip().replace("\n", " ")
         published = entry.findtext("atom:published", default="", namespaces=namespace)
         updated = entry.findtext("atom:updated", default="", namespaces=namespace)
-        paper_id = entry.findtext("atom:id", default="", namespaces=namespace)
+        paper_url = entry.findtext("atom:id", default="", namespaces=namespace)
+        arxiv_id = paper_url.rstrip("/").split("/")[-1]
 
         authors = [
             author.findtext("atom:name", default="", namespaces=namespace)
@@ -85,7 +86,8 @@ def search_arxiv(query, max_results):
 
         papers.append(
             {
-                "arxiv_id": paper_id,
+                "arxiv_id": arxiv_id,
+                "link": paper_url,
                 "title": title,
                 "summary": summary,
                 "published": published,
