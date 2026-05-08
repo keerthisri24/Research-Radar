@@ -4,6 +4,9 @@ Research Radar is an end to end AI powered research and news update pipeline tha
 
 The system ingests recent arXiv papers and AI related Hacker News posts, applies LLM ranking and summarization, stores processed results in PostgreSQL with Docker, and delivers a curated digest through Telegram on a scheduled basis.
 
+<img width="74" height="160" alt="IMG_4988" src="https://github.com/user-attachments/assets/fa25465f-ab70-4c5b-9b5f-695aaae5635a" />
+<img width="74" height="160" alt="IMG_4989" src="https://github.com/user-attachments/assets/35f372f2-2971-4e8a-a52b-3a609763e79c" />
+
 ---
 
 # Features
