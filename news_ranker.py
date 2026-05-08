@@ -26,13 +26,20 @@ Prioritize stories that are:
 - likely to matter beyond shallow hype
 - not redundant with each other
 
-Return ONLY valid JSON as a list of the top 5 stories sorted by relevance_score descending.
+Return ONLY valid JSON in this exact format:
 
-Each item must contain:
-- news_id
-- title
-- relevance_score
-- reason_selected
+{
+  "stories": [
+    {
+      "news_id": "...",
+      "title": "...",
+      "relevance_score": 8,
+      "reason_selected": "..."
+    }
+  ]
+}
+
+Return the top 5 stories sorted by relevance_score descending.
 
 Rules:
 - Use only the provided title, URL, score, and comment count
@@ -67,6 +74,7 @@ def rank_news(news_items):
     response = client.chat.completions.create(
         model=MODEL,
         temperature=0.2,
+        response_format={"type":"json_object"},
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -75,12 +83,15 @@ def rank_news(news_items):
 
     content = response.choices[0].message.content.strip()
 
-    if content.startswith("```json"):
-        content = content.removeprefix("```json").removesuffix("```").strip()
-    elif content.startswith("```"):
-        content = content.removeprefix("```").removesuffix("```").strip()
+    # if content.startswith("```json"):
+    #     content = content.removeprefix("```json").removesuffix("```").strip()
+    # elif content.startswith("```"):
+    #     content = content.removeprefix("```").removesuffix("```").strip()
+    
+    parsed = json.loads(content)
+    return parsed["stories"]
 
-    return json.loads(content)
+    #return json.loads(content)
 
 
 if __name__ == "__main__":
