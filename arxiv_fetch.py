@@ -10,6 +10,36 @@ from urllib.parse import quote_plus
 
 ARXIV_URL = "http://export.arxiv.org/api/query"
 
+# retry because of rate limits
+def get_retry(url, retries=5):
+    for attempt in range(retries):
+        try:
+            time.sleep(5)
+
+            response = requests.get(url, timeout=60, headers={"User-Agent": "ResearchRadar/1.0"})
+
+            if response.status_code == 429:
+                wait_time = 30 * (attempt + 1)
+                print(f"arXiv rate limit error. Waiting {wait_time} seconds...")
+                time.sleep(wait_time)
+                continue
+
+            response.raise_for_status()
+            return response
+
+        except requests.exceptions.ReadTimeout:
+            wait_time = 20 * (attempt + 1)
+            print(f"arXiv timed out. Waiting {wait_time} seconds...")
+            time.sleep(wait_time)
+
+        except requests.exceptions.ConnectionError:
+            wait_time = 20 * (attempt + 1)
+            print(f"Connection error. Waiting {wait_time} seconds...")
+            time.sleep(wait_time)
+
+    raise Exception("arXiv request failed after retries.")
+
+
 # return list of relevant papers
 def search_arxiv(query, max_results):
     url = f"ARXIV_URL{query}"
@@ -24,9 +54,7 @@ def search_arxiv(query, max_results):
         f"&sortOrder=descending"
     )
 
-    time.sleep(3)
-    retrieved_papers = requests.get(url, timeout=30)
-    retrieved_papers.raise_for_status()
+    retrieved_papers = get_retry(url)
 
     papers_formatted = ET.fromstring(retrieved_papers.text)
 
@@ -67,6 +95,8 @@ def search_arxiv(query, max_results):
             }
         )
 
+       
+    # print(entry)
 
     return papers
 
