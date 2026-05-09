@@ -230,7 +230,7 @@ Use that value as `TELEGRAM_CHAT_ID`.
 Recommended configuration:
 
 * Amazon Linux 2023
-* t2.micro
+* t3.micro
 * SSH enabled
 
 ---
